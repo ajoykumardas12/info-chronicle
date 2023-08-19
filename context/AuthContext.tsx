@@ -46,7 +46,16 @@ export function AuthContextProvider({
 
   return (
     <AuthContext.Provider value={{ user }}>
-      {loading ? <div>Loading...</div> : children}
+      {loading ? (
+        <>
+          <header className="w-full p-4 bg-light">
+            <div className="text-lg font-bold">InfoChronicle</div>
+          </header>
+          <div className="p-6">loading...</div>
+        </>
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 }
