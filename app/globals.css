@@ -94,4 +94,8 @@
   .link:focus::after {
     height: 100%;
   }
+  html,
+  body {
+    scroll-behavior: smooth;
+  }
 }

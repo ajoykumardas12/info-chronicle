@@ -12,7 +12,9 @@ const Article = (article: NewsArticle) => {
       className="w-full flex flex-col items-center bg-lighter hover:bg-light focus:bg-light px-6 py-8 rounded-lg hover:shadow-lg"
     >
       <img
-        src={article.urlToImage || `/iamges/n-logo-border.png`}
+        src={
+          article.urlToImage ? article.urlToImage : `/images/n-logo-border.png`
+        }
         alt={article.title}
         className="w-11/12 h-60 object-cover rounded"
       />
