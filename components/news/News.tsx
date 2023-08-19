@@ -7,21 +7,24 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 const News = () => {
+  // Get page from query params
   const router = useRouter();
   const searchParams = useSearchParams();
   let page = Number(searchParams.get("page"));
-
+  // if no query for page, set page to 1
   if (!page) {
     page = 1;
   }
 
   const [news, setNews] = useState([]);
 
-  // Track total and current pages
+  // Track total pages
   const [totalPages, setTotalPages] = useState(1);
+  // Loading states: Loading | Loaded | Failed | InvalidPage
   const [loading, setLoading] = useState<
-    "loading" | "loaded" | "failed" | "tooFar"
+    "loading" | "loaded" | "failed" | "invalidPage"
   >("loading");
+  // Fetch news articles
   useEffect(() => {
     const APIKey = process.env.NEXT_PUBLIC_NEWS_API_KEY;
     fetch(`https://newsapi.org/v2/top-headlines?language=en&pageSize=20&page=${page}&apiKey=${APIKey}
@@ -29,10 +32,13 @@ const News = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        setTotalPages(Math.floor(data.totalResults / 20));
+        setTotalPages(
+          // Max 100 results allowed in developer account
+          Math.floor(Math.min(Number(data.totalResults), 100) / 20)
+        );
         setNews(data.articles);
         if (data.code === "maximumResultsReached") {
-          setLoading("tooFar");
+          setLoading("invalidPage");
         } else {
           setLoading("loaded");
         }
@@ -41,9 +47,9 @@ const News = () => {
         setLoading("failed");
         console.log("error", error);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [page]);
 
+  // Return content depending on loading state
   if (loading === "loading") {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -53,7 +59,7 @@ const News = () => {
         <Skeleton className="w-full h-84" />
       </div>
     );
-  } else if (loading === "tooFar") {
+  } else if (loading === "invalidPage") {
     return (
       <div className="text-center my-20">
         <div className="mb-4">You&apos;ve wandered off too far from home.</div>

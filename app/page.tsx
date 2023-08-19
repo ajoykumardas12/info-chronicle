@@ -15,7 +15,8 @@ export default function Home() {
     }
   }, [user, router]);
   return (
-    <main className="p-6">
+    <main className="px-6 py-2">
+      <h1 className="text-dark font-bold text-2xl">Top Headlines</h1>
       <News />
     </main>
   );
