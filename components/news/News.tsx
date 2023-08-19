@@ -24,12 +24,16 @@ const News = () => {
   const [loading, setLoading] = useState<
     "loading" | "loaded" | "failed" | "invalidPage"
   >("loading");
+
   // Fetch news articles
   useEffect(() => {
-    const APIKey = process.env.NEXT_PUBLIC_NEWS_API_KEY;
-    fetch(`https://newsapi.org/v2/top-headlines?language=en&pageSize=20&page=${page}&apiKey=${APIKey}
-    `)
-      .then((res) => res.json())
+    fetch(`http://localhost:3000/api/news`, {
+      method: "POST",
+      body: JSON.stringify({
+        queryString: `language=en&page=${page}`,
+      }),
+    })
+      .then((response) => response.json())
       .then((data) => {
         console.log(data);
         setTotalPages(
@@ -45,7 +49,7 @@ const News = () => {
       })
       .catch((error) => {
         setLoading("failed");
-        console.log("error", error);
+        console.log(error);
       });
   }, [page]);
 

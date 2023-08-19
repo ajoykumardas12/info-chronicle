@@ -8,7 +8,6 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { Button } from "./ui/button";
-import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Checkbox } from "./ui/checkbox";
 
@@ -17,7 +16,7 @@ const Header = () => {
     <header className="w-full p-4 flex items-center justify-between bg-light">
       <div className="text-lg font-bold">InfoChronicle</div>
       <nav>
-        <ul className="flex items-center gap-4">
+        <ul className="flex items-center gap-6">
           <li>
             <Dialog>
               <DialogTrigger asChild>
