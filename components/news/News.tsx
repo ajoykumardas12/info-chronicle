@@ -27,12 +27,19 @@ const News = () => {
 
   // Fetch news articles
   useEffect(() => {
-    fetch(`http://localhost:3000/api/news`, {
-      method: "POST",
-      body: JSON.stringify({
-        queryString: `language=en&page=${page}`,
-      }),
-    })
+    fetch(
+      `${
+        process.env.NEXT_PUBLIC_ENVIRONMENT === "local"
+          ? "http://localhost:3000"
+          : "https://info-chronicle.vercel.app/"
+      }/api/news`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          queryString: `language=en&page=${page}`,
+        }),
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
