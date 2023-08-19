@@ -24,29 +24,29 @@ const News = () => {
       });
   }, []);
 
-  if (loading === "loaded") {
+  if (loading === "loading") {
     return (
-      <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <Skeleton className="w-full h-84" />
+        <Skeleton className="w-full h-84" />
+        <Skeleton className="w-full h-84" />
+        <Skeleton className="w-full h-84" />
+      </div>
+    );
+  } else if (loading === "loaded") {
+    return (
+      <div className="py-4">
         {news && (
-          <div className="grid grid-cols-2 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 auto-rows-fr gap-10">
             {news.map((article: NewsArticle) => {
               return (
-                <div key={article.title}>
+                <article key={article.title}>
                   <Article {...article} />
-                </div>
+                </article>
               );
             })}
           </div>
         )}
-      </div>
-    );
-  } else if (loading === "loading") {
-    return (
-      <div className="grid grid-cols-2 gap-10">
-        <Skeleton className="w-full h-84" />
-        <Skeleton className="w-full h-84" />
-        <Skeleton className="w-full h-84" />
-        <Skeleton className="w-full h-84" />
       </div>
     );
   } else {

@@ -55,6 +55,7 @@ module.exports = {
         dark: "#3D4B5F",
         mid: "#8799AF",
         light: "#CBD5E1",
+        lighter: "#ebeef2",
       },
       borderRadius: {
         lg: "var(--radius)",
