@@ -9,7 +9,7 @@ const Article = (article: NewsArticle) => {
     <Link
       href={article.url}
       target="_blank"
-      className="w-full flex flex-col items-center bg-lighter hover:bg-light focus:bg-light px-6 py-8 rounded-lg hover:shadow-lg"
+      className="w-full flex flex-col items-center px-6 py-8"
     >
       <img
         src={

@@ -36,7 +36,7 @@ const News = () => {
       {
         method: "POST",
         body: JSON.stringify({
-          queryString: `language=en&page=${page}`,
+          queryString: `language=en&page=${page}&category=general`,
         }),
       }
     )
@@ -87,7 +87,10 @@ const News = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 auto-rows-fr gap-10">
               {news.map((article: NewsArticle) => {
                 return (
-                  <article key={article.title}>
+                  <article
+                    key={article.title}
+                    className="bg-lighter hover:bg-light rounded-lg hover:shadow-lg"
+                  >
                     <Article {...article} />
                   </article>
                 );
