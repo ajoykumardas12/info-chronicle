@@ -6,10 +6,16 @@ export const POST = async (req: Request, res: Response) => {
 
   try {
     const queryString = body.queryString;
+    console.log(
+      `https://newsapi.org/v2/top-headlines?${queryString}&pageSize=20&apiKey=${APIKey}`
+    );
+
     const response = await fetch(
       `https://newsapi.org/v2/top-headlines?${queryString}&pageSize=20&apiKey=${APIKey}`
     );
     const data = await response.json();
+    console.log(data);
+
     return NextResponse.json({
       status: data.status,
       totalResults: data.totalResults,

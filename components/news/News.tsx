@@ -36,6 +36,8 @@ const News = () => {
 
   // Fetch news articles
   useEffect(() => {
+    console.log("fetching");
+
     const query = `language=en&page=${page}&category=${
       preferences?.category ? preferences.category : "general"
     }`;
@@ -45,7 +47,7 @@ const News = () => {
       `${
         process.env.NEXT_PUBLIC_ENVIRONMENT === "local"
           ? "http://localhost:3000"
-          : "https://info-chronicle.vercel.app/"
+          : "https://info-chronicle.vercel.app"
       }/api/news`,
       {
         method: "POST",
@@ -70,7 +72,7 @@ const News = () => {
       })
       .catch((error) => {
         setLoading("failed");
-        console.log(error);
+        console.log("error", error);
       });
   }, [page, preferences, preferences?.category]);
 
