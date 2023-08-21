@@ -5,6 +5,10 @@ import { Skeleton } from "../ui/skeleton";
 import { Button } from "../ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import {
+  Preferences,
+  usePreferencesContext,
+} from "@/context/PreferencesContext";
 
 const News = () => {
   // Get page from query params
@@ -15,6 +19,11 @@ const News = () => {
   if (!page) {
     page = 1;
   }
+
+  // Get preferences from context
+  const { preferences } = usePreferencesContext() as {
+    preferences: Preferences;
+  };
 
   const [news, setNews] = useState([]);
 
@@ -27,6 +36,11 @@ const News = () => {
 
   // Fetch news articles
   useEffect(() => {
+    const query = `language=en&page=${page}&category=${
+      preferences?.category ? preferences.category : "general"
+    }`;
+    console.log(query);
+
     fetch(
       `${
         process.env.NEXT_PUBLIC_ENVIRONMENT === "local"
@@ -36,7 +50,7 @@ const News = () => {
       {
         method: "POST",
         body: JSON.stringify({
-          queryString: `language=en&page=${page}&category=general`,
+          queryString: query,
         }),
       }
     )
@@ -58,7 +72,7 @@ const News = () => {
         setLoading("failed");
         console.log(error);
       });
-  }, [page]);
+  }, [page, preferences, preferences?.category]);
 
   // Return content depending on loading state
   if (loading === "loading") {

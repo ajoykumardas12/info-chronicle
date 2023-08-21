@@ -27,6 +27,7 @@ export function AuthContextProvider({
 }: AuthContextProviderProps): JSX.Element {
   // Authenticated user and loading status
   const [user, setUser] = useState<User | null>(null);
+  const [uid, setUid] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,8 +35,10 @@ export function AuthContextProvider({
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
+        setUid(user.uid);
       } else {
         setUser(null);
+        setUid(null);
       }
       setLoading(false);
     });
@@ -45,13 +48,13 @@ export function AuthContextProvider({
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user }}>
+    <AuthContext.Provider value={{ user, uid }}>
       {loading ? (
         <>
           <header className="w-full p-4 bg-light">
             <div className="text-lg font-bold">InfoChronicle</div>
           </header>
-          <div className="p-6">loading...</div>
+          <div className="p-6">Authenticating...</div>
         </>
       ) : (
         children

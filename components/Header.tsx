@@ -18,23 +18,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import addData from "@/firebase/addData";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useAuthContext } from "@/context/AuthContext";
+import {
+  Preferences,
+  usePreferencesContext,
+} from "@/context/PreferencesContext";
 
 const Header = () => {
-  const [userId, setUserId] = useState("");
-  const auth = getAuth();
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserId(user.uid);
-      } else {
-      }
-    });
-  }, [auth]);
+  // Controlled dialog
+  const [isOpen, setIsOpen] = useState(false);
 
-  const [category, setCategory] = useState("general");
+  const { uid } = useAuthContext() as { uid: string };
+  // Get preferences from context
+  const { preferences, setPreferences } = usePreferencesContext() as {
+    preferences: Preferences;
+    setPreferences: (newData: Preferences) => void;
+  };
+
+  const [category, setCategory] = useState(
+    preferences?.category ? preferences.category : "general"
+  );
   const [saving, setSaving] = useState(false);
   const [result, setResult] = useState<string | null>();
 
@@ -45,7 +50,7 @@ const Header = () => {
     const data = {
       category: category,
     };
-    const { result, error } = await addData("preferences", userId, data);
+    const { result, error } = await addData("preferences", uid, data);
 
     if (error) {
       console.log(error);
@@ -53,6 +58,8 @@ const Header = () => {
     } else {
       setResult("Preferences updated!");
       setSaving(false);
+      setPreferences(data);
+      setIsOpen(false);
     }
   };
 
@@ -62,9 +69,12 @@ const Header = () => {
       <nav>
         <ul className="flex items-center gap-6">
           <li>
-            <Dialog>
+            <Dialog open={isOpen} onOpenChange={setIsOpen}>
               <DialogTrigger asChild>
-                <button className="flex items-center">
+                <button
+                  className="flex items-center"
+                  onClick={() => setIsOpen(true)}
+                >
                   <Settings strokeWidth={1} size={18} className="mr-1" />{" "}
                   Preferences
                 </button>
