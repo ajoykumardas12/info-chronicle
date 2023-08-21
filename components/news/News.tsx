@@ -41,7 +41,6 @@ const News = () => {
     const query = `language=en&page=${page}&category=${
       preferences?.category ? preferences.category : "general"
     }`;
-    console.log(query);
 
     fetch(
       `${
